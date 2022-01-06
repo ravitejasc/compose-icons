@@ -2,10 +2,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        gradlePluginPortal()
+        maven { url = uri("https://plugins.gradle.org/m2/") }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.0")
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
     }
@@ -25,8 +26,9 @@ allprojects {
     description = "Compose icons is a set of open source icons packs for Jetpack Compose"
 
     repositories {
-        jcenter()
         mavenCentral()
+        gradlePluginPortal()
+        maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
         google()
     }

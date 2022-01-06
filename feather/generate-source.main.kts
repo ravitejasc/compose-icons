@@ -1,7 +1,7 @@
 @file:Repository("https://jitpack.io")
 @file:Repository("https://maven.google.com")
+@file:Repository("https://plugins.gradle.org/m2/")
 @file:Repository("https://jetbrains.bintray.com/trove4j")
-@file:Repository("file:///home/devsrsouza/.m2/repository")
 
 // svg-to-compose
 @file:DependsOn("com.github.DevSrSouza:svg-to-compose:0.8.1")
@@ -26,7 +26,7 @@ fun File.makeDirs() = apply { mkdirs() }
 
 val buildDir = File("build/").makeDirs()
 
-val githubId = "feathericons/feather"
+/*val githubId = "feathericons/feather"
 val repository = "https://github.com/$githubId"
 val version = "v4.28.0"
 val rawGithubRepository = "https://raw.githubusercontent.com/$githubId/$version"
@@ -39,9 +39,12 @@ val git = Git.cloneRepository()
     .setURI(repository)
     .setDirectory(repoCloneDir)
     .call()
-git.checkout().setName("refs/tags/$version").call()
+git.checkout().setName("refs/tags/$version").call()*/
 
-val iconsDir = File(repoCloneDir, "icons")
+//val repoCloneDir = createTempDir(suffix = "feather-git-repo")
+
+//val iconsDir = File(repoCloneDir, "icons")
+val iconsDir = File("feather-icons")
 
 // renaming to match to svg-to-compose
 val previousNames: List<Pair<String, String>> = iconsDir.listFiles().filter { it.extension == "svg" }
@@ -63,27 +66,41 @@ srcDir.mkdirs()
 
 println("Generating all svg to compose")
 
+/*val iconsDir = File("linea-icons")
+val srcDir = File("src/main/kotlin")
+
+Svg2Compose.parse(
+    applicationIconPackage = "assets",
+    accessorName = "LineaIcons",
+    outputSourceDirectory = srcDir,
+    vectorsDirectory = iconsDir,
+    type = VectorType.SVG,
+    iconNameTransformer = { name, group -> name.removePrefix(group) },
+    allAssetsPropertyName = "AllIcons"
+)*/
+
 val result = Svg2Compose.parse(
     applicationIconPackage = "compose.icons",
     accessorName = "FeatherIcons",
     outputSourceDirectory = srcDir,
     vectorsDirectory = iconsDir,
     type = VectorType.SVG,
+    iconNameTransformer = { name, group -> name.removePrefix(group) },
     allAssetsPropertyName = "AllIcons"
 )
 
-println("Copying LICENSE from the Icon pack")
+println("Svg2Compose generated")
 
-val licensePath = "LICENSE"
-val licenseFile = File(repoCloneDir, licensePath)
+//val licensePath = "LICENSE"
+//val licenseFile = File(repoCloneDir, licensePath)
 
-val resDir = File("src/commonMain/resources").makeDirs()
-val licenseInResource = File(resDir, "feather-license.txt")
+//val resDir = File("src/commonMain/resources").makeDirs()
+//val licenseInResource = File(resDir, "feather-license.txt")
 
-licenseFile.copyTo(licenseInResource, overwrite = true)
+//licenseFile.copyTo(licenseInResource, overwrite = true)
 
 
-println("Generating documentation")
+/*println("Generating documentation")
 
 data class DocumentationGroup(
     val groupName: String,
@@ -124,7 +141,7 @@ fun ParsingResult.asDocumentationGroup(
 }
 
 fun markdownSvg(doc: DocumentationIcon): String {
-    return "![](${rawGithubRepository + "/" + replacePathName(doc.svgFilePathRelativeToRepository) })"
+    return "" //return "![](${rawGithubRepository + "/" + replacePathName(doc.svgFilePathRelativeToRepository) })"
 }
 
 fun markdownIconDocumentation(doc: DocumentationIcon): String {
@@ -135,9 +152,9 @@ val chunks = 3
 fun List<DocumentationIcon>.iconsTableDocumentation(): String = sortedBy { it.accessingFormat }
     .chunked(chunks).map {
         "| ${it.map { markdownIconDocumentation(it) }.joinToString(" | ")} |"
-    }.joinToString("\n")
+    }.joinToString("\n")*/
 
-val documentationGroups = result.asDocumentationGroupList()
+/*val documentationGroups = result.asDocumentationGroupList()
     .filter { it.icons.isNotEmpty() }
     .map {
         """
@@ -153,18 +170,18 @@ val header = """
     
     <br />
     
-""".trimIndent()
+""".trimIndent()*/
 
 
-val license = """
+/*val license = """
     ## [License]($blobGithubRepository/$licensePath)
     
     ```
     
-    """.trimIndent() + licenseFile.readText().trimEnd { it == '\n' } + "\n```\n\n<br /><br />\n\n"
+    """.trimIndent() + licenseFile.readText().trimEnd { it == '\n' } + "\n```\n\n<br /><br />\n\n"*/
 
-File("DOCUMENTATION.md").apply{
+/*File("DOCUMENTATION.md").apply{
     if(exists().not()) createNewFile()
 }.writeText(
-    header + "\n" + license + "\n" + documentationGroups
-)
+    header + "\n" + "\n" + documentationGroups
+)*/
